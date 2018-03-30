@@ -1,0 +1,62 @@
+[
+    {
+        "name":"1920x1280",
+        "width":1920,
+        "height":1280
+    },
+    {
+        "name":"1440x900",
+        "width":1440,
+        "height":990
+    },
+    {
+        "name":"1280x900",
+        "width":1280,
+        "height":990
+
+    }
+    ,
+    {
+        "name":"1024x600",
+        "width":1024,
+        "height": 600
+
+    }
+    ,
+    {
+        "name":"770x1280",
+        "width":770,
+        "height":1280
+    }
+    ,
+    {
+        "name":"520x320",
+        "width":520,
+        "height":1280
+
+    }
+    ,
+    {
+        "name":"768x1024-ipad-portrait",
+        "width":768,
+        "height":1024
+    }
+    ,
+    {
+        "name":"1024x768-ipad-landscape",
+        "width":1024,
+        "height":768
+    }
+    ,
+    {
+        "name":"568x320-mobile-portrait",
+        "width":568,
+        "height":320
+    },
+    {
+        "name":"320x568-mobile-landscape",
+        "width":320,
+        "height":568
+
+    }
+]
