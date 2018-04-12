@@ -70,6 +70,9 @@ const argsList = require('yargs')
   .option('git', {
     describe: 'The url of the remote repository',
   })
+  .option('pm2', {
+    describe: 'create an pm2 process on the app an pass along the <name> and the <port>',
+  })
   .option('remote', {
     describe: 'ssh like url to use for setting up the config',
   })
