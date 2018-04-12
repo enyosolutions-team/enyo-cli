@@ -22,14 +22,13 @@ try{
 }
 catch (ex){
   console.log('This is your first install, please take a few seconds to configure your install'.cyan);
-  console.log('first config', config, defaultConfig);
   config = defaultConfig;
-  initConfig()
+  initConfig();
+
 }
 
 
 function initConfig(){
-  console.log('first config', config);
   prompt.get([
   {
     name: 'projectFolder',
@@ -69,14 +68,13 @@ function initConfig(){
 const argsList = require('yargs')
 .help('help').alias('-h','help')
 .command('init', 'Set the config for a better app generation', (yargs) => {
-
 }, (args) =>{
   initConfig()
 })
 
 
 
-.command('mongodb <dbName>', 'create a database and user in mongo', (yargs) => {
+.command('mongocreate <dbName>', 'create a database and user in mongo', (yargs) => {
   yargs.positional('dbName', {
     describe: '- the database name',
   })
