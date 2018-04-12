@@ -3,48 +3,68 @@
 const screenshot = require('./lib/screenshot');
 const sitemap = require('./lib/sitemap');
 const initNginx = require('./lib/nginx');
+const createDatabase = require('./lib/mongodb');
 const async = require('async');
 const colors = require('colors');
 const fs = require('fs');
 const prompt = require('prompt');
 let config;
-
-function initConfig(){
-  prompt.get([
-  {
-   name: 'projectFolder',
-   description: 'Where is the base folder for your apps code ?',
-   default: '/apps',
-   type: 'string'
- },
- {
-   name: 'nginxConfigFolder',
-   description: 'Where is the base folder for your nginx virtual hosts ?',
-   type: 'string',
-   default: '/etc/nginx/sites-enabled',
- },
- {
-   name: 'portStartRange',
-   description: 'What is the lowest number we should start scanning for free port ?',
-   type: 'integer',
-   default: 5000,
- },
- ], function (err, result) {
-  console.log('YOUR CONFIG IS NOW', result);
-  if(result){
-    fs.writeFileSync( process.cwd() + '/config.json', JSON.stringify(result));
-  }
-});
+let defaultConfig = {
+  projectFolder :'/apps',
+  nginxConfigFolder: '/etc/nginx/sites-enabled',
+  portStartRange: 5000,
+  mongoUrl: 'mongobd://root:toor@localhost:27017/admin'
 }
 
 // LOADING CONFIG
 try{
   config = fs.readFileSync( process.cwd() + '/config.json');
+  config = JSON.parse(config);
 }
 catch (ex){
   console.log('This is your first install, please take a few seconds to configure your install'.cyan);
+  console.log('first config', config, defaultConfig);
+  config = defaultConfig;
   initConfig()
 }
+
+
+function initConfig(){
+  console.log('first config', config);
+  prompt.get([
+  {
+    name: 'projectFolder',
+    description: 'Where is the base folder for your apps code ?',
+    default: config.projectFolder,
+    type: 'string'
+  },
+  {
+   name: 'nginxConfigFolder',
+   description: 'Where is the base folder for your nginx virtual hosts ?',
+   type: 'string',
+   default: config.nginxConfigFolder,
+ },
+ {
+   name: 'portStartRange',
+   description: 'What is the lowest number we should start scanning for free port ?',
+   type: 'integer',
+   default: config.portStartRange,
+ },
+ {
+   name: 'mongoUrl',
+   description: 'What is the mongo url for db connexion (mongodb://user:pass@host:27017/<authentication-database>',
+   type: 'string',
+   default: config.mongoUrl,
+ }
+ ], function (err, result) {
+  if(result){
+    fs.writeFileSync( process.cwd() + '/config.json', JSON.stringify(result));
+
+    console.log('YOUR CONFIG IS NOW', result);
+  }
+});
+}
+
 
 
 const argsList = require('yargs')
@@ -54,6 +74,25 @@ const argsList = require('yargs')
 }, (args) =>{
   initConfig()
 })
+
+
+
+.command('mongodb <dbName>', 'create a database and user in mongo', (yargs) => {
+  yargs.positional('dbName', {
+    describe: '- the database name',
+  })
+  .option('user', {
+    describe: 'the username of the database created'
+  })
+  .option('pass', {
+    alias: 'p',
+    describe: 'the password of the database created'
+  });
+}
+, argv => {
+  createDatabase(argv.dbName, argv);
+})
+
 
 .command('nginx <name>', 'init a nginx repo', (yargs) => {
 
