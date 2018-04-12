@@ -1,8 +1,11 @@
 {
-  "name": "enyo",
-  "version": "0.0.7",
+  "name": "enyo-cli",
+  "version": "0.0.8",
   "main": "index.js",
-  "bin": "index.js",
+  "bin": {"enyo": "index.js"},
+  "name" : "enyosolutions",
+  "email" : "dev@enyosolutions.com",
+  "url" : "http://enyosolutions.com/",
   "license": "MIT",
   "dependencies": {
     "async": "^2.6.0",
