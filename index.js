@@ -18,8 +18,7 @@ let defaultConfig = {
 
 // LOADING CONFIG
 try{
-  config = fs.readFileSync( process.cwd() + '/config.json');
-  config = JSON.parse(config);
+  config = require('./config.json');
 }
 catch (ex){
   console.log('This is your first install, please take a few seconds to configure your install'.cyan);
@@ -58,7 +57,7 @@ function initConfig(){
  }
  ], function (err, result) {
   if(result){
-    fs.writeFileSync( process.cwd() + '/config.json', JSON.stringify(result));
+    fs.writeFileSync('./config.json', JSON.stringify(result));
 
     console.log('YOUR CONFIG IS NOW', result);
   }
