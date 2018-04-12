@@ -7,18 +7,19 @@ const createDatabase = require('./lib/mongodb');
 const async = require('async');
 const colors = require('colors');
 const fs = require('fs');
+var homeDir =  require('os').homedir();
 const prompt = require('prompt');
 let config;
 let defaultConfig = {
   projectFolder :'/apps',
   nginxConfigFolder: '/etc/nginx/sites-enabled',
   portStartRange: 5000,
-  mongoUrl: 'mongobd://root:toor@localhost:27017/admin'
+  mongoUrl: 'mongodb://root:toor@localhost:27017/admin'
 }
 
 // LOADING CONFIG
 try{
-  config = require('./config.json');
+  config = require(homeDir + '/.enyo.json');
 }
 catch (ex){
   console.log('This is your first install, please take a few seconds to configure your install'.cyan);
@@ -56,7 +57,7 @@ function initConfig(){
  }
  ], function (err, result) {
   if(result){
-    fs.writeFileSync('./config.json', JSON.stringify(result));
+    fs.writeFileSync(homeDir + '/.enyo.json', JSON.stringify(result));
 
     console.log('YOUR CONFIG IS NOW', result);
   }
@@ -87,7 +88,7 @@ const argsList = require('yargs')
   });
 }
 , argv => {
-  createDatabase(argv.dbName, argv);
+  createDatabase(argv.dbName, argv, config);
 })
 
 
@@ -124,7 +125,7 @@ const argsList = require('yargs')
   })
 }
 , argv => {
-  initNginx(argv.name, argv);
+  initNginx(argv.name, argv, config);
 })
 .command('screenshot <website>', 'take a screen shot of an url', (yargs) => {
   yargs
@@ -178,7 +179,7 @@ const argsList = require('yargs')
     return;
   }
 
-  screenshot(argv.website, argv).then((res)=> {
+  screenshot(argv.website, argv, config).then((res)=> {
     console.log('Screenshot saved');
     setTimeout(()=>{
       process.exit(0);
