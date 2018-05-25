@@ -13,6 +13,7 @@ let config;
 let defaultConfig = {
   projectFolder :'/apps',
   nginxConfigFolder: '/etc/nginx/sites-enabled',
+  nginxHost: '',
   portStartRange: 5000,
   mongoUrl: 'mongodb://root:toor@localhost:27017/admin'
 }
@@ -42,6 +43,12 @@ function initConfig(){
    description: 'Where is the base folder for your nginx virtual hosts ?',
    type: 'string',
    default: config.nginxConfigFolder,
+ },
+  {
+   name: 'nginxHost',
+   description: 'what\'s the host name of this server ? if provided all virtualhosts will be subdomains of this one. If you want to create absolute urls, dont provide it.',
+   type: 'string',
+   default: config.nginxHost,
  },
  {
    name: 'portStartRange',
