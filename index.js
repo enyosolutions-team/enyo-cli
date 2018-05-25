@@ -4,6 +4,7 @@ const screenshot = require('./lib/screenshot');
 const sitemap = require('./lib/sitemap');
 const initNginx = require('./lib/nginx');
 const createDatabase = require('./lib/mongodb');
+const git = require('./lib/git');
 const async = require('async');
 const colors = require('colors');
 const fs = require('fs');
@@ -15,7 +16,9 @@ let defaultConfig = {
   nginxConfigFolder: '/etc/nginx/sites-enabled',
   nginxHost: '',
   portStartRange: 5000,
-  mongoUrl: 'mongodb://root:toor@localhost:27017/admin'
+  mongoUrl: 'mongodb://root:toor@localhost:27017/admin',
+  gitGroupId: null,
+  gitApiAuth: null
 }
 
 // LOADING CONFIG
@@ -46,10 +49,23 @@ function initConfig(){
  },
   {
    name: 'nginxHost',
-   description: 'what\'s the host name of this server ? if provided all virtualhosts will be subdomains of this one. If you want to create absolute urls, dont provide it.',
+   description: 'what\'s the host name of this server ? if provided all virtualhosts will be ' +
+   'subdomains of this one. If you want to create absolute urls, dont provide it.',
    type: 'string',
    default: config.nginxHost,
  },
+ {
+   name: 'gitApiAuth',
+   description: 'What\s the api key for gitlab ? ',
+   type: 'string',
+   default: config.gitApiAuth,
+ },
+ {
+   name: 'gitGroupId',
+   description: 'What default group for created repository ?',
+   type: 'string',
+   default: config.gitGroupId,
+},
  {
    name: 'portStartRange',
    description: 'What is the lowest number we should start scanning for free port ?',
@@ -58,7 +74,7 @@ function initConfig(){
  },
  {
    name: 'mongoUrl',
-   description: 'What is the mongo url for db connexion (mongodb://user:pass@host:27017/<authentication-database>',
+   description: 'What is the mongo url for db connexion (mongodb://user:pass@host:27017/<authentication-database>)',
    type: 'string',
    default: config.mongoUrl,
  }
@@ -80,8 +96,9 @@ const argsList = require('yargs')
   initConfig()
 })
 
-
-
+/*
+MONGO DB
+ */
 .command('mongocreate <dbName>', 'create a database and user in mongo', (yargs) => {
   yargs.positional('dbName', {
     describe: '- the database name',
@@ -98,7 +115,28 @@ const argsList = require('yargs')
   createDatabase(argv.dbName, argv, config);
 })
 
+/*
+GIT
+ */
+.command('git-init <repoName>', 'create a database and user in mongo', (yargs) => {
+  yargs.positional('repoName', {
+    describe: '- the repository name',
+  })
+  .option('group', {
+    describe: 'the group id of the repoName created',
+    default: config.gitGroupId,
+  })
 
+}
+, argv => {
+  git.initRemote(argv.dbName, argv, config);
+})
+g
+
+
+/*
+NGINX
+ */
 .command('nginx <name>', 'init a nginx repo', (yargs) => {
 
   yargs.positional('name', {
@@ -137,6 +175,10 @@ const argsList = require('yargs')
 , argv => {
   initNginx(argv.name, argv, config);
 })
+
+/*
+SCREENSHOT
+ */
 .command('screenshot <website>', 'take a screen shot of an url', (yargs) => {
   yargs
   .usage('Usage: $0  screenshot [website] -R [recursive] -o [output]')

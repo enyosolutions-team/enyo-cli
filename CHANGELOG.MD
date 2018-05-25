@@ -4,3 +4,4 @@
 
 ## 0.0.15
 - fixed a bug related to config location
+

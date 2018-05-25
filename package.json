@@ -6,7 +6,7 @@
     "enyo": "index.js"
   },
   "email": "dev@enyosolutions.com",
-  "url": "http://enyosolutions.com/",
+  "url": "http://www.enyosolutions.com/",
   "license": "MIT",
   "dependencies": {
     "async": "^2.6.0",
