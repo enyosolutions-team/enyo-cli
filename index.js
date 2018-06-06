@@ -128,6 +128,10 @@ GIT
         .option('group', {
           describe: 'the group id of the repoName created',
           default: config.gitGroupId,
+        })
+        .option('secure', {
+          describe: 'protect branches',
+          default: true
         });
     }
     , (argv) => {
