@@ -14,3 +14,8 @@
 - linted the code to avoid errors
 - started the structure for a jenkins install
 
+
+## 0.0.19
+- added webhook adding commands
+- refactored all commands
+- Added api.js to use commands inside apps.

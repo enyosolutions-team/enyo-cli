@@ -100,7 +100,7 @@ yargsCommand.help('help').alias('-h', 'help') // eslint-disable-line no-unused-e
 MONGO DB
 */
   .command(
-    'mongocreate <dbName>', 'create a database and user in mongo', (yargs) => {
+    ['mongocreate <dbName>', 'mongo create <dbName>', 'mongo add <dbName>'], 'create a database and user in mongo', (yargs) => {
       yargs.positional('dbName', {
         describe: '- the database name',
       })
@@ -121,7 +121,7 @@ MONGO DB
 GIT
 */
   .command(
-    'git-init <repoName>', 'create a database and user in mongo', (yargs) => {
+    ['git-init <repoName>', 'git init <repoName>'], 'create a database and user in mongo', (yargs) => {
       yargs.positional('repoName', {
         describe: '- the repository name',
       })
@@ -129,13 +129,34 @@ GIT
           describe: 'the group id of the repoName created',
           default: config.gitGroupId,
         })
+        .option('ci', {
+          describe: 'Add jenkins branches',
+          default: true
+        })
         .option('secure', {
           describe: 'protect branches',
           default: true
-        });
+        })
+        ;
     }
     , (argv) => {
       git.initRemote(argv.repoName, argv, config);
+    }
+  )
+
+  .command(
+    ['git-add-webhook <repoName> <webhookUrl>', 'git add-webhook <repoName> <webhookUrl>', 'git webhook add <repoName> <webhookUrl>'], 'Add a webhook to an existing repository', (yargs) => {
+      yargs.positional('repoName', {
+        describe: '- the repository name',
+      })
+        .option('group', {
+          describe: 'the group id of the repoName created',
+          default: config.gitGroupId,
+        })
+        ;
+    }
+    , (argv) => {
+      git.addWebhook(argv.repoName, argv.webhookUrl, argv, config);
     }
   )
 
