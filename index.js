@@ -20,7 +20,8 @@ const defaultConfig = {
   portStartRange: 5000,
   mongoUrl: 'mongodb://root:toor@localhost:27017/admin',
   gitGroupId: null,
-  gitApiAuth: null
+  gitApiAuth: null,
+  jenkinsUrl: null,
 };
 
 
@@ -69,6 +70,13 @@ function initConfig() {
       type: 'string',
       default: config.mongoUrl,
     }
+    ,
+        {
+          name: 'jenkinsUrl',
+          description: 'What is the jenkins url for continuous (https://{username}:{password}@ci.dev.enyosolutions.com)',
+          type: 'string',
+          default: config.jenkinsUrl,
+        }
   ], (err, result) => {
     if (result) {
       fs.writeFileSync(`${homeDir}/.enyo.json`, JSON.stringify(result));
@@ -135,6 +143,10 @@ GIT
         })
         .option('secure', {
           describe: 'protect branches',
+          default: true
+        })
+        .option('type', {
+          describe: 'the project type (front|angular|node|php)',
           default: true
         })
         ;
