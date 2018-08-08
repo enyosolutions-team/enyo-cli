@@ -5,4 +5,4 @@ const createDatabase = require('./lib/mongodb');
 const git = require('./lib/git');
 
 
-module.exports = {nginx: {init: initNginx}, git, mongo:{create: createDatabase}};
+module.exports = { nginx: { init: initNginx }, git, mongo: { create: createDatabase } };

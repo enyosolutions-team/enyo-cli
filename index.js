@@ -69,14 +69,13 @@ function initConfig() {
       description: 'What is the mongo url for db connexion (mongodb://user:pass@host:27017/<authentication-database>)',
       type: 'string',
       default: config.mongoUrl,
+    },
+    {
+      name: 'jenkinsUrl',
+      description: 'What is the jenkins url for continuous (https://{username}:{password}@ci.dev.enyosolutions.com)',
+      type: 'string',
+      default: config.jenkinsUrl,
     }
-    ,
-        {
-          name: 'jenkinsUrl',
-          description: 'What is the jenkins url for continuous (https://{username}:{password}@ci.dev.enyosolutions.com)',
-          type: 'string',
-          default: config.jenkinsUrl,
-        }
   ], (err, result) => {
     if (result) {
       fs.writeFileSync(`${homeDir}/.enyo.json`, JSON.stringify(result));
@@ -125,6 +124,27 @@ MONGO DB
     }
   )
 
+  /*
+  JEKINS
+  */
+  .command(
+    ['jenkins-create <jobName>', 'jenkins create <jobName>', 'jeknis add <jobName>'], 'create a job in jenkins', (yargs) => {
+      yargs.positional('jobName', {
+        describe: '- the job name',
+      })
+        .option('git', {
+          describe: 'the git repository'
+        })
+        .option('type', {
+          alias: 't',
+          describe: 'the template ofr the repository'
+        });
+    }
+    , (argv) => {
+      createDatabase(argv.dbName, argv, config);
+    }
+  )
+
 /*
 GIT
 */
@@ -148,8 +168,7 @@ GIT
         .option('type', {
           describe: 'the project type (front|angular|node|php)',
           default: true
-        })
-        ;
+        });
     }
     , (argv) => {
       git.initRemote(argv.repoName, argv, config);
@@ -164,8 +183,7 @@ GIT
         .option('group', {
           describe: 'the group id of the repoName created',
           default: config.gitGroupId,
-        })
-        ;
+        });
     }
     , (argv) => {
       git.addWebhook(argv.repoName, argv.webhookUrl, argv, config);
@@ -182,7 +200,6 @@ NGINX
         describe: '- the subdomain name',
       })
         .option('type', {
-          default: 'php',
           describe: 'the type of app (php / html / proxy). use html for buidled angular projects, and proxy for nodejs projects'
         })
         .option('port', {
