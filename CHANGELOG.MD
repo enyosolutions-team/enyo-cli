@@ -27,3 +27,8 @@
 ## 0.0.24
 - Creating branch wip
 
+
+## 0.1.0
+- api for supporting in app use
+- renaming functions
+- better promise support

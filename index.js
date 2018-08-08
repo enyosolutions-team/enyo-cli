@@ -11,6 +11,8 @@ const colors = require('colors'); // eslint-disable-line no-unused-vars
 const fs = require('fs');
 const homeDir = require('os').homedir();
 const prompt = require('prompt');
+const api = require('api');
+
 
 global.config = {};
 const defaultConfig = {
@@ -171,7 +173,7 @@ GIT
         });
     }
     , (argv) => {
-      git.initRemote(argv.repoName, argv, config);
+      git.createRepository(argv.repoName, argv, config);
     }
   )
 
@@ -300,3 +302,4 @@ SCREENSHOT
   })
   .argv;
 
+module.exports = api;
