@@ -306,4 +306,6 @@ SCREENSHOT
   })
   .argv;
 
+
+api.config = config;
 module.exports = api;

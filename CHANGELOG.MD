@@ -36,3 +36,7 @@
 ## 0.1.1
 - feat: mandatory parameters.
 - feat: promise like nginx commands
+
+## 0.1.2
+- fix: (nginx) errors in port and app name affectation.
+- feat: more verbose actions.
