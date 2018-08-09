@@ -32,3 +32,7 @@
 - api for supporting in app use
 - renaming functions
 - better promise support
+
+## 0.1.1
+- feat: mandatory parameters.
+- feat: promise like nginx commands
