@@ -11,7 +11,7 @@ const colors = require('colors'); // eslint-disable-line no-unused-vars
 const fs = require('fs');
 const homeDir = require('os').homedir();
 const prompt = require('prompt');
-const api = require('api');
+const api = require('./api');
 
 
 global.config = {};
@@ -169,6 +169,7 @@ GIT
         })
         .option('type', {
           describe: 'the project type (front|angular|node|php)',
+          choices: ['front', 'angular', 'node', 'php'],
           default: true
         });
     }
@@ -202,13 +203,16 @@ NGINX
         describe: '- the subdomain name',
       })
         .option('type', {
-          describe: 'the type of app (php / html / proxy). use html for buidled angular projects, and proxy for nodejs projects'
+          describe: 'the type of app (php / html / proxy / node). use html for bundled angular projects, proxy for profixied projects and node for node projects',
+          choices: ['php', 'html', 'proxy', 'node'],
+          required: true
         })
         .option('port', {
-          describe: 'the port of the app (only for type proxy)'
+          describe: 'the port of the app (only for types proxy and node)'
         })
         .option('git', {
           describe: 'The url of the remote repository',
+          required: true
         })
         .option('pm2', {
           describe: 'create an pm2 process on the app an pass along the <name> and the <port>',
