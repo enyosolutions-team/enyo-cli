@@ -170,7 +170,7 @@ GIT
         .option('type', {
           describe: 'the project type (front|angular|node|php)',
           choices: ['front', 'angular', 'node', 'php'],
-          default: true
+          required: true
         });
     }
     , (argv) => {
